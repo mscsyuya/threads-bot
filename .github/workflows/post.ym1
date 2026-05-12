@@ -1,0 +1,30 @@
+name: Post to Threads
+
+on:
+  # 手動実行を許可
+  workflow_dispatch:
+
+  # cron(後で有効化、今はコメントアウト)
+  # schedule:
+  #   - cron: "0 12 * * *"  # 毎日 UTC 12:00 = JST 21:00
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Post to Threads
+        env:
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+          THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+        run: python post_to_threads.py
