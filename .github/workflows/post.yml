@@ -3,13 +3,13 @@ name: Post to Threads
 on:
   workflow_dispatch:
 
+  # 1日2投稿スケジュール(JST 21:00 と 23:30)
   schedule:
-    - cron: "0 12 * * *"   # JST 21:00
-    - cron: "30 14 * * *"  # JST 23:30
-    - cron: "0 17 * * *"   # JST 02:00
+    - cron: "0 12 * * *"   # JST 21:00 ゴールデンタイム
+    - cron: "30 14 * * *"  # JST 23:30 寝る前タイム
 
 permissions:
-  contents: write  # 履歴ファイルをコミットするために必要
+  contents: write
 
 jobs:
   post:
@@ -27,6 +27,7 @@ jobs:
         run: pip install requests
 
       - name: Random delay (anti-detection)
+        if: github.event_name != 'workflow_dispatch'
         run: |
           DELAY=$((RANDOM % 600))
           echo "Sleeping for $DELAY seconds to add jitter"
