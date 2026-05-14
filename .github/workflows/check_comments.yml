@@ -35,10 +35,14 @@ jobs:
 
       - name: Commit notified history
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add notified_comments.json
-          if ! git diff --staged --quiet; then
-            git commit -m "Update notified comments [skip ci]"
-            git push
+          if [ -f notified_comments.json ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add notified_comments.json
+            if ! git diff --staged --quiet; then
+              git commit -m "Update notified comments [skip ci]"
+              git push
+            fi
+          else
+            echo "notified_comments.json が存在しないのでスキップ(新着コメントなし)"
           fi
