@@ -197,8 +197,12 @@ def main():
     selected = select_post(posts, history)
     text = selected["text"]
     post_id = selected["id"]
+    category = selected.get("category")
 
-    print(f"=== 選択された投稿: {post_id} ({len(text)}字) ===")
+    if category:
+        print(f"=== 選択された投稿: {post_id} (カテゴリ: {category}) ({len(text)}字) ===")
+    else:
+        print(f"=== 選択された投稿: {post_id} ({len(text)}字) ===")
     print(text)
     print(f"=" * 40)
 
